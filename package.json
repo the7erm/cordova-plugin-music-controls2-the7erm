@@ -30,6 +30,7 @@
   ],
   "author": "ghenry22",
   "license": "MIT",
+  "types": "./types/index.d.ts",
   "bugs": {
     "url": "https://github.com/andeodev/cordova-plugin-music-controls2/issues"
   },
