@@ -24,7 +24,7 @@ public class MusicControlsInfos{
 
 	public MusicControlsInfos(JSONArray args) throws JSONException {
 		final JSONObject params = args.getJSONObject(0);
-		
+
 		this.track = params.getString("track");
 		this.artist = params.getString("artist");
     		this.album = params.getString("album");

@@ -40,14 +40,14 @@ MusicControls.create({
 	hasClose  : true,		// show close button, optional, default: false
 
 	// iOS only, optional
-	
+
 	duration : 60, // optional, default: 0
 	elapsed : 10, // optional, default: 0
   	hasSkipForward : true, //optional, default: false. true value overrides hasNext.
   	hasSkipBackward : true, //optional, default: false. true value overrides hasPrev.
   	skipForwardInterval : 15, //optional. default: 0.
 	skipBackwardInterval : 15, //optional. default: 0.
-	hasScrubbing : false, //optional. default to false. Enable scrubbing from control center progress bar 
+	hasScrubbing : false, //optional. default to false. Enable scrubbing from control center progress bar
 
 	// Android only, optional
 	// text displayed in the status bar when the notification (and the ticker) are updated
@@ -159,7 +159,7 @@ MusicControls.disableBatteryOptimizations();
 </platform>
 ```
 
-Alternatively, the following opens the settings for the battery optimization, but the user has to select the app 
+Alternatively, the following opens the settings for the battery optimization, but the user has to select the app
 manually.  However, this does not require the additional permission:
 
 ```javascript
@@ -176,7 +176,7 @@ MusicControls.checkBatteryOptimizations(function (status) {
 });
 ```
 
-## List of media button events 
+## List of media button events
 - Default:
 ```javascript
 'music-controls-media-button'
