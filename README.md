@@ -17,9 +17,9 @@ updates to npm to make life easier for everyone.
 
 ## Installation
 - Current release
-`cordova plugin add cordova-plugin-music-controls2`
+`cordova plugin add @andeo/cordova-plugin-music-controls2`
 - Bleeding edge direct from github
-`cordova plugin add https://github.com/ghenry22/cordova-plugin-music-controls2`
+`cordova plugin add https://github.com/andeodev/cordova-plugin-music-controls2`
 
 ## Methods
 - Create the media controls:
@@ -138,6 +138,41 @@ Allows you to listen for iOS events fired from the scrubber in control center.
 MusicControls.updateElapsed({
 	elapsed: 208, // seconds
 	isPlaying: true
+});
+```
+
+- Battery optimization (Android only)
+
+Request to disable battery optimizations for this app.  This will show a popup for the user to confirm.
+
+```javascript
+MusicControls.disableBatteryOptimizations();
+```
+
+`MusicControls.disableBatteryOptimizations()` requires an additional permission to work, add this to your config.xml:
+
+```xml
+<platform name="android">
+    <config-file target="AndroidManifest.xml" parent="/manifest">
+        <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"/>
+    </config-file>
+</platform>
+```
+
+Alternatively, the following opens the settings for the battery optimization, but the user has to select the app 
+manually.  However, this does not require the additional permission:
+
+```javascript
+MusicControls.openBatteryOptimizationSettings();
+```
+
+Check if battery optimizations are enabled:
+
+```javascript
+MusicControls.checkBatteryOptimizations(function (status) {
+    // status is either
+    // 'enabled' Battery optimization is enabled (the default, unless changed).
+    // 'disabled' Batter optimization is disabled.
 });
 ```
 
