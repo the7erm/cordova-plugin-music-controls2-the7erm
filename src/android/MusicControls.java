@@ -31,9 +31,11 @@ import android.app.Service;
 import android.os.IBinder;
 import android.os.Bundle;
 import android.os.Build;
+import android.os.PowerManager;
 import android.R;
 import android.content.BroadcastReceiver;
 import android.media.AudioManager;
+import android.provider.Settings;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -233,6 +235,18 @@ public class MusicControls extends CordovaPlugin {
 				}
 			});
 		}
+		else if (action.equals("disableBatteryOptimizations")) {
+			disableBatteryOptimizations();
+		}
+		else if (action.equals("openBatteryOptimizationSettings")) {
+			openBatteryOptimizationSettings();
+		}
+		else if (action.equals("checkBatteryOptimizations")) {
+			if (checkBatteryOptimizations())
+				callbackContext.success("enabled");
+			else
+				callbackContext.success("disabled");
+		}
 		return true;
 	}
 
@@ -320,5 +334,52 @@ public class MusicControls extends CordovaPlugin {
 			ex.printStackTrace();
 			return null;
 		}
+	}
+
+	/**
+	 * Disables battery optimizations for the app.  Requires the permission REQUEST_IGNORE_BATTERY_OPTIMIZATIONS, which
+	 * is not included by default.
+	 */
+	private void disableBatteryOptimizations() {
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
+			return;
+
+		Activity activity = cordova.getActivity();
+		String pkgName = activity.getPackageName();
+		PowerManager powerManager = (PowerManager)activity.getSystemService(Context.POWER_SERVICE);
+		if (powerManager.isIgnoringBatteryOptimizations(pkgName))
+			return;
+
+		Intent intent = new Intent();
+		intent.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+		intent.setData(Uri.parse("package:" + pkgName));
+
+		cordova.getActivity().startActivity(intent);
+	}
+
+	/**
+	 * Open the battery optimization settings.  Does not require any special permissions.
+	 */
+	private void openBatteryOptimizationSettings() {
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
+			return;
+
+		Activity activity = cordova.getActivity();
+		Intent intent = new Intent();
+		intent.setAction(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
+		cordova.getActivity().startActivity(intent);
+	}
+
+	/**
+	 * Check if battery optimizations are disabled.  Returns true if battery optimization is *enabled*.
+	 */
+	private boolean checkBatteryOptimizations() {
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
+			return true;
+
+		Activity activity = cordova.getActivity();
+		String pkgName = activity.getPackageName();
+		PowerManager powerManager = (PowerManager)activity.getSystemService(Context.POWER_SERVICE);
+		return powerManager.isIgnoringBatteryOptimizations(pkgName);
 	}
 }

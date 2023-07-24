@@ -97,7 +97,37 @@ var musicControls = {
       "watch",
       []
     );
-  }
+  },
+
+  disableBatteryOptimizations: function() {
+    cordova.exec(
+        null,
+        null,
+        "MusicControls",
+        "disableBatteryOptimizations",
+        []
+    );
+  },
+
+  openBatteryOptimizationSettings: function() {
+    cordova.exec(
+        null,
+        null,
+        "MusicControls",
+        "openBatteryOptimizationSettings",
+        []
+    );
+  },
+
+  checkBatteryOptimizations: function(successCallback, errorCallback) {
+    cordova.exec(
+        successCallback,
+        errorCallback,
+        "MusicControls",
+        "checkBatteryOptimizations",
+        []
+    );
+  },
 };
 
 function isUndefined(val) {
