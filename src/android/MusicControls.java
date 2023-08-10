@@ -36,6 +36,7 @@ import android.R;
 import android.content.BroadcastReceiver;
 import android.media.AudioManager;
 import android.provider.Settings;
+import android.view.View;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -381,5 +382,28 @@ public class MusicControls extends CordovaPlugin {
 		String pkgName = activity.getPackageName();
 		PowerManager powerManager = (PowerManager)activity.getSystemService(Context.POWER_SERVICE);
 		return powerManager.isIgnoringBatteryOptimizations(pkgName);
+	}
+
+	@Override
+	public void onPause(boolean multitasking) {
+		super.onPause(multitasking);
+
+		// Hack to allow the execution of async JavaScript even when the app is in the background
+		Thread thread = new Thread() {
+			public void run() {
+				try {
+					Thread.sleep(1000);
+					cordova.getActivity().runOnUiThread(() -> {
+						View view = webView.getEngine().getView();
+						view.dispatchWindowVisibilityChanged(View.VISIBLE);
+					});
+				}
+				catch (InterruptedException e) {
+					LOG.e("AudioHandler: InterruptedException", e.getMessage());
+				}
+			}
+		};
+
+		thread.start();
 	}
 }
