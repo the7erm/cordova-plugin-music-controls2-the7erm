@@ -4,16 +4,19 @@ import android.app.Notification;
 import android.app.Service;
 import android.os.Build;
 import android.os.IBinder;
-import android.os.Binder;
 import android.os.PowerManager;
 import android.app.NotificationManager;
 import android.content.Intent;
 
+import org.apache.cordova.LOG;
+
 public class MusicControlsNotificationKiller extends Service {
 
-	private static int NOTIFICATION_ID;
+	private int NOTIFICATION_ID;
 	private NotificationManager mNM;
 	private final IBinder mBinder = new KillBinder(this);
+
+	private final String LOG_TAG = "MusicControls::Service";
 
 	private PowerManager.WakeLock wakeLock;
 
@@ -24,6 +27,7 @@ public class MusicControlsNotificationKiller extends Service {
 	}
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
+		LOG.d(LOG_TAG, "Service started");
 		return Service.START_STICKY;
 	}
 
@@ -32,12 +36,7 @@ public class MusicControlsNotificationKiller extends Service {
 		mNM = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 		mNM.cancel(NOTIFICATION_ID);
 
-		if (this.wakeLock == null) {
-			PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
-			this.wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Adonia::MediaPlayer");
-		}
-
-		this.wakeLock.acquire();
+		LOG.d(LOG_TAG, "Service created");
 	}
 
 	@Override
@@ -45,13 +44,22 @@ public class MusicControlsNotificationKiller extends Service {
 		mNM = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 		mNM.cancel(NOTIFICATION_ID);
 
-		if (this.wakeLock != null) {
-			this.wakeLock.release();
-		}
+		LOG.d(LOG_TAG, "Service destroyed");
 	}
 
 	public void setForeground(Notification notification) {
 		this.startForeground(this.NOTIFICATION_ID, notification);
+
+		if (this.wakeLock == null) {
+			PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
+			this.wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Adonia::MediaPlayer");
+		}
+
+		if (!this.wakeLock.isHeld()) {
+			this.wakeLock.acquire();
+		}
+
+		LOG.d(LOG_TAG, "Service set to foreground");
 	}
 
 	public void clearForeground() {
@@ -60,5 +68,11 @@ public class MusicControlsNotificationKiller extends Service {
 		}
 
 		this.stopForeground(STOP_FOREGROUND_DETACH);
+
+		if (this.wakeLock != null && this.wakeLock.isHeld()) {
+			this.wakeLock.release();
+		}
+
+		LOG.d(LOG_TAG, "Service removed from foreground");
 	}
 }
