@@ -48,7 +48,12 @@ public class MusicControlsNotificationKiller extends Service {
 	}
 
 	public void setForeground(Notification notification) {
-		this.startForeground(this.NOTIFICATION_ID, notification);
+		try {
+		    this.startForeground(this.NOTIFICATION_ID, notification);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return;
+        }
 
 		if (this.wakeLock == null) {
 			PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
@@ -70,7 +75,12 @@ public class MusicControlsNotificationKiller extends Service {
 		this.stopForeground(STOP_FOREGROUND_DETACH);
 
 		if (this.wakeLock != null && this.wakeLock.isHeld()) {
-			this.wakeLock.release();
+            try {
+		        this.wakeLock.release();
+		    } catch (Exception ex) {
+                ex.printStackTrace();
+                return;
+            }
 		}
 
 		LOG.d(LOG_TAG, "Service removed from foreground");
