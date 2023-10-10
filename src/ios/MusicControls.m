@@ -87,7 +87,7 @@ MusicControlsInfo * musicControlsSettings;
 - (MPMediaItemArtwork *) createCoverArtwork: (NSString *) coverUri {
     UIImage * coverImage = nil;
 
-    if (coverUri == nil) {
+    if (coverUri == nil || [coverUri isKindOfClass:[NSNull class]]) {
         return nil;
     }
 
