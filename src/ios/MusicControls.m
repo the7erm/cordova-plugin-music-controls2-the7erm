@@ -37,6 +37,8 @@ MusicControlsInfo * musicControlsSettings;
 
         if (mediaItemArtwork != nil) {
             [updatedNowPlayingInfo setObject:mediaItemArtwork forKey:MPMediaItemPropertyArtwork];
+        } else {
+            [updatedNowPlayingInfo removeObjectForKey:MPMediaItemPropertyArtwork];
         }
 
         [updatedNowPlayingInfo setObject:[musicControlsInfo artist] forKey:MPMediaItemPropertyArtist];
