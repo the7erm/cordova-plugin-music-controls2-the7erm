@@ -17,7 +17,12 @@ public class MusicControlsServiceConnection implements ServiceConnection {
 
     public void onServiceConnected(ComponentName className, IBinder binder) {
         service = ((KillBinder) binder).service;
-        service.startService(new Intent(activity, MusicControlsNotificationKiller.class));
+        try {
+            service.startService(new Intent(activity, MusicControlsNotificationKiller.class));
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     public void onServiceDisconnected(ComponentName className) {
