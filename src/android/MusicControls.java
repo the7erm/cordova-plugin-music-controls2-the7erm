@@ -107,7 +107,8 @@ public class MusicControls extends CordovaPlugin {
 		final MusicControlsServiceConnection mConnection = new MusicControlsServiceConnection(activity);
 
 		this.cordovaActivity = activity;
-/* 		this.notification = new MusicControlsNotification(this.cordovaActivity, this.notificationID) {
+		/*
+		this.notification = new MusicControlsNotification(this.cordovaActivity, this.notificationID) {
 			@Override
 			protected void onNotificationUpdated(Notification notification) {
 				mConnection.setNotification(notification, this.infos.isPlaying);
@@ -117,7 +118,8 @@ public class MusicControls extends CordovaPlugin {
 			protected void onNotificationDestroyed() {
 				mConnection.setNotification(null, false);
 			}
-		}; */
+		};
+		*/
 
 		this.mMessageReceiver = new MusicControlsBroadcastReceiver(this);
 		this.registerBroadcaster(mMessageReceiver);
@@ -161,7 +163,7 @@ public class MusicControls extends CordovaPlugin {
 		}
 
 		Intent startServiceIntent = new Intent(activity,MusicControlsNotificationKiller.class);
-		startServiceIntent.putExtra("notificationID",this.notificationID);
+		startServiceIntent.putExtra("notificationID", this.notificationID);
 		activity.bindService(startServiceIntent, mConnection, Context.BIND_AUTO_CREATE);
 	}
 
@@ -347,14 +349,16 @@ public class MusicControls extends CordovaPlugin {
 	 * is not included by default.
 	 */
 	private void disableBatteryOptimizations() {
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
 			return;
+		}
 
 		Activity activity = cordova.getActivity();
 		String pkgName = activity.getPackageName();
 		PowerManager powerManager = (PowerManager)activity.getSystemService(Context.POWER_SERVICE);
-		if (powerManager.isIgnoringBatteryOptimizations(pkgName))
+		if (powerManager.isIgnoringBatteryOptimizations(pkgName)) {
 			return;
+		}
 
 		Intent intent = new Intent();
 		intent.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
@@ -380,8 +384,9 @@ public class MusicControls extends CordovaPlugin {
 	 * Check if battery optimizations are disabled.  Returns true if battery optimization is *enabled*.
 	 */
 	private boolean checkBatteryOptimizations() {
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
 			return true;
+		}
 
 		Activity activity = cordova.getActivity();
 		String pkgName = activity.getPackageName();
