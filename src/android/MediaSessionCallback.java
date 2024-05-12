@@ -131,6 +131,8 @@ public class MediaSessionCallback extends MediaSessionCompat.Callback {
           }
           return super.onMediaButtonEvent(mediaButtonIntent);
       }
+      // Not sure if this will fix things or not ... but let's see what happens.
+      return super.onMediaButtonEvent(mediaButtonIntent);
     }
 
     return true;
