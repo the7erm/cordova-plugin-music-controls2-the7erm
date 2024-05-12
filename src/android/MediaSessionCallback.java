@@ -61,6 +61,7 @@ public class MediaSessionCallback extends MediaSessionCompat.Callback {
     final KeyEvent event = (KeyEvent) mediaButtonIntent.getExtras().get(Intent.EXTRA_KEY_EVENT);
     if(this.cb != null) {
       this.cb.success("{\"message\": \"music-controls-test\", \"source\": \"test\", \"event\":\""+event+"\"}");
+      this.cb.success("{\"message\": \"music-controls-test2\", \"source\": \"test2\", \"event\":\""+event+"\"}");
     }
     if (event == null) {
       return super.onMediaButtonEvent(mediaButtonIntent);
@@ -112,7 +113,6 @@ public class MediaSessionCallback extends MediaSessionCompat.Callback {
           }
           break;
         case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD:
-
           if(this.cb != null) {
             this.cb.success("{\"message\": \"music-controls-forward\", \"source\": \"music-controls-media-button-forward\"}");
             this.cb = null;
