@@ -277,6 +277,7 @@ public class MusicControls extends CordovaPlugin {
 				PlaybackStateCompat.ACTION_PLAY_PAUSE |
 				PlaybackStateCompat.ACTION_PAUSE |
 				PlaybackStateCompat.ACTION_SKIP_TO_NEXT |
+				PlaybackStateCompat.ACTION_STOP |
 				PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS |
 				PlaybackStateCompat.ACTION_PLAY_FROM_MEDIA_ID |
 				PlaybackStateCompat.ACTION_PLAY_FROM_SEARCH);
@@ -285,6 +286,7 @@ public class MusicControls extends CordovaPlugin {
 			playbackstateBuilder.setActions(
 				PlaybackStateCompat.ACTION_PLAY_PAUSE |
 				PlaybackStateCompat.ACTION_PLAY |
+				PlaybackStateCompat.ACTION_STOP |
 				PlaybackStateCompat.ACTION_SKIP_TO_NEXT |
 				PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS |
 				PlaybackStateCompat.ACTION_PLAY_FROM_MEDIA_ID |
