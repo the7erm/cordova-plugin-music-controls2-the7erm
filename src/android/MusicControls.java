@@ -89,7 +89,7 @@ public class MusicControls extends CordovaPlugin {
 	public void unregisterMediaButtonEvent(){
 		this.mediaSessionCompat.setMediaButtonReceiver(null);
 		/*if (this.mediaButtonAccess && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR2){
-		this.mAudioManager.unregisterMediaButtonEventReceiver(this.mediaButtonPendingIntent);
+			this.mAudioManager.unregisterMediaButtonEventReceiver(this.mediaButtonPendingIntent);
 		}*/
 	}
 
@@ -212,10 +212,12 @@ public class MusicControls extends CordovaPlugin {
 			final boolean isPlaying = params.getBoolean("isPlaying");
 			this.notification.updateIsPlaying(isPlaying);
 
-			if(isPlaying)
+			if(isPlaying) {
 				setMediaPlaybackState(PlaybackStateCompat.STATE_PLAYING);
-			else
+
+			} else{
 				setMediaPlaybackState(PlaybackStateCompat.STATE_PAUSED);
+			}
 
 			callbackContext.success("success");
 		}
@@ -231,13 +233,13 @@ public class MusicControls extends CordovaPlugin {
 			callbackContext.success("success");
 		}
 		else if (action.equals("watch")) {
-			this.registerMediaButtonEvent();
-      			this.cordova.getThreadPool().execute(new Runnable() {
-				public void run() {
-          				mMediaSessionCallback.setCallback(callbackContext);
-					mMessageReceiver.setCallback(callbackContext);
-				}
-			});
+				this.registerMediaButtonEvent();
+				this.cordova.getThreadPool().execute(new Runnable() {
+					public void run() {
+						mMediaSessionCallback.setCallback(callbackContext);
+						mMessageReceiver.setCallback(callbackContext);
+					}
+				});
 		}
 		else if (action.equals("disableBatteryOptimizations")) {
 			disableBatteryOptimizations();
@@ -270,12 +272,21 @@ public class MusicControls extends CordovaPlugin {
 	private void setMediaPlaybackState(int state) {
 		PlaybackStateCompat.Builder playbackstateBuilder = new PlaybackStateCompat.Builder();
 		if( state == PlaybackStateCompat.STATE_PLAYING ) {
-			playbackstateBuilder.setActions(PlaybackStateCompat.ACTION_PLAY_PAUSE | PlaybackStateCompat.ACTION_PAUSE | PlaybackStateCompat.ACTION_SKIP_TO_NEXT | PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS |
+			playbackstateBuilder.setActions(
+				PlaybackStateCompat.ACTION_PLAY |
+				PlaybackStateCompat.ACTION_PLAY_PAUSE |
+				PlaybackStateCompat.ACTION_PAUSE |
+				PlaybackStateCompat.ACTION_SKIP_TO_NEXT |
+				PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS |
 				PlaybackStateCompat.ACTION_PLAY_FROM_MEDIA_ID |
 				PlaybackStateCompat.ACTION_PLAY_FROM_SEARCH);
 			playbackstateBuilder.setState(state, PlaybackStateCompat.PLAYBACK_POSITION_UNKNOWN, 1.0f);
 		} else {
-			playbackstateBuilder.setActions(PlaybackStateCompat.ACTION_PLAY_PAUSE | PlaybackStateCompat.ACTION_PLAY | PlaybackStateCompat.ACTION_SKIP_TO_NEXT | PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS |
+			playbackstateBuilder.setActions(
+				PlaybackStateCompat.ACTION_PLAY_PAUSE |
+				PlaybackStateCompat.ACTION_PLAY |
+				PlaybackStateCompat.ACTION_SKIP_TO_NEXT |
+				PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS |
 				PlaybackStateCompat.ACTION_PLAY_FROM_MEDIA_ID |
 				PlaybackStateCompat.ACTION_PLAY_FROM_SEARCH);
 			playbackstateBuilder.setState(state, PlaybackStateCompat.PLAYBACK_POSITION_UNKNOWN, 0);
@@ -397,23 +408,21 @@ public class MusicControls extends CordovaPlugin {
 	@Override
 	public void onPause(boolean multitasking) {
 		super.onPause(multitasking);
-
 		// Hack to allow the execution of async JavaScript even when the app is in the background
 		Thread thread = new Thread() {
 			public void run() {
 				try {
-					Thread.sleep(1000);
+					// Thread.sleep(1000);
+					Thread.sleep(500);
 					cordova.getActivity().runOnUiThread(() -> {
 						View view = webView.getEngine().getView();
 						view.dispatchWindowVisibilityChanged(View.VISIBLE);
 					});
-				}
-				catch (InterruptedException e) {
+				} catch (InterruptedException e) {
 					LOG.e("AudioHandler: InterruptedException", e.getMessage());
 				}
 			}
 		};
-
 		thread.start();
 	}
 }
