@@ -1,9 +1,9 @@
 {
-  "name": "@andeo/cordova-plugin-music-controls2",
+  "name": "@the7erm/cordova-plugin-music-controls2-the7erm",
   "version": "1.0.6",
   "description": "Music controls for Cordova apps",
   "cordova": {
-    "id": "@andeo/cordova-plugin-music-controls2",
+    "id": "@the7erm/cordova-plugin-music-controls2-the7erm",
     "platforms": [
       "android",
       "windows",
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/andeodev/cordova-plugin-music-controls2.git"
+    "url": "git+https://github.com/the7erm/cordova-plugin-music-controls2-the7erm.git"
   },
   "keywords": [
     "cordova",
@@ -36,7 +36,7 @@
   "license": "MIT",
   "types": "./types/index.d.ts",
   "bugs": {
-    "url": "https://github.com/andeodev/cordova-plugin-music-controls2/issues"
+    "url": "https://github.com/the7erm/cordova-plugin-music-controls2-the7erm/issues"
   },
-  "homepage": "https://github.com/andeodev/cordova-plugin-music-controls2#readme"
+  "homepage": "https://github.com/the7erm/cordova-plugin-music-controls2-the7erm#readme"
 }

@@ -16,10 +16,8 @@ updates to npm to make life easier for everyone.
 - iOS 8+ (by [0505gonzalez](https://github.com/0505gonzalez))
 
 ## Installation
-- Current release
-`cordova plugin add @andeo/cordova-plugin-music-controls2`
 - Bleeding edge direct from github
-`cordova plugin add https://github.com/andeodev/cordova-plugin-music-controls2`
+`cordova plugin add https://github.com/the7erm/cordova-plugin-music-controls2-the7erm`
 
 ## Methods
 - Create the media controls:
