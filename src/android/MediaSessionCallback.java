@@ -34,6 +34,15 @@ public class MediaSessionCallback extends MediaSessionCompat.Callback {
   }
 
   @Override
+  public void onStop() {
+    super.onStop();
+    if(this.cb != null) {
+      this.cb.success("{\"message\": \"music-controls-stop\", \"source\": \"music-controls-media-button-stop 1\"}");
+      this.cb = null;
+    }
+  }
+
+  @Override
   public void onSkipToNext() {
     super.onSkipToNext();
     if(this.cb != null) {
